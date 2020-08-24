@@ -13,10 +13,7 @@ import {
     Box
 } from "@material-ui/core"
 import Button from '@material-ui/core/Button';
-import {
 
-    Home,
-} from "@material-ui/icons"
 import ConfirmationNumberIcon from '@material-ui/icons/ConfirmationNumber';
 import SupervisorAccountIcon from '@material-ui/icons/SupervisorAccount';
 import EventSeatIcon from '@material-ui/icons/EventSeat';
@@ -79,11 +76,6 @@ const useStyles = makeStyles(
 
 const menuItems = [
     {
-        listIcon: <Home/>,
-        listText: "Home",
-        listPath: "/"
-    },
-    {
         listIcon: <EventSeatIcon/>,
         listText: "Events",
         listPath: "/events"
@@ -101,6 +93,7 @@ const menuItems = [
 ]
 
 const Navbar = () => {
+
 
     const [state,setState] = useState({
         left:false
@@ -121,7 +114,7 @@ const Navbar = () => {
             <Divider/>
             <List>
                 {menuItems.map((lsItem, key) => (
-                    <ListItem button key={key} component={Link} to={lsItem.listPath}>
+                    <ListItem selected={true} button key={key} component={Link} to={lsItem.listPath}>
 
                         <ListItemIcon className={classes.iconColor}>
                             {lsItem.listIcon}
@@ -154,7 +147,7 @@ const Navbar = () => {
                                 <div></div>
                                 <Typography variant="h5" style={{ flexGrow:1 }} >
                                     <div className={navbarCss.fontBitter}>
-                                        Reuben Coutinho
+                                        Go To Events
                                     </div>
                                 </Typography>
                                 <MobilRightMenuSlider  open={state.left}
@@ -189,11 +182,11 @@ const Navbar = () => {
                             </Typography>
 
                             {menuItems.map((lsItem, key) => (
-                                <Button size="medium" style={{ marginLeft:"5px"}} key={key} component={Link} to={lsItem.listPath}>
-                                    <ListItemIcon className={ `${classes.whiteColor} ${classes.icon}`}>
+                                <Button  size="medium" style={{ marginLeft:"5px"}} key={key} component={Link} to={lsItem.listPath}>
+                                    <ListItemIcon  className={ `${classes.whiteColor} ${classes.icon}`}>
                                         {lsItem.listIcon}
                                     </ListItemIcon>
-                                    <ListItemText className={classes.whiteColor}>
+                                    <ListItemText  className={classes.whiteColor}>
                                         <div>
                                             {lsItem.listText}
                                         </div>
