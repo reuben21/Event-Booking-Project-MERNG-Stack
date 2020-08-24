@@ -44,7 +44,7 @@ function getModalStyle() {
         top: `${top}%`,
         left: `${left}%`,
         transform: `translate(-${top}%, -${left}%)`,
-        width:"200px",
+        width:"70%",
         height:"400px"
     };
 }
@@ -80,24 +80,36 @@ const EventsPage = () => {
     };
     const handleSubmit = (evt) => {
         evt.preventDefault();
-        alert(`Submitting Name ${name}`)
+        alert(`Submitting Name ${title}`)
     }
     const body = (
         <div style={modalStyle} className={classes.paper}>
             <form onSubmit={handleSubmit}>
                 <div>
-                    <CssTextField style={{marginTop: "10px", display: "block", color: "green"}}
-                                  className={classes.margin}
+                    <Grid
+                        container
+                        direction="column"
+                        justify="center"
+                        alignItems="center"
+
+
+                    >
+                    <CssTextField style={{display: "block", color: "green"}}
+
                                   label="Email-ID"
                                   variant="outlined"
                                   id="custom-css-outlined-input"
+                                  value ={title}
                                   onChange={e=>setTitle(e.target.value)}
                     />
+                        <ColorButton  type="submit" variant="contained"
+                                     color="primary" onClick={handleOpen}>
+                            Create Event
+                        </ColorButton>
+                    </Grid>
+
                 </div>
-                <ColorButton type="submit" variant="contained"
-                             color="primary" onClick={handleOpen}>
-                    Create Event
-                </ColorButton>
+
             </form>
         </div>
     );
@@ -118,6 +130,7 @@ const EventsPage = () => {
                 alignItems="center"
                 style={{
                     marginTop: "150px",
+                    display:"flex"
 
                 }}
             >
