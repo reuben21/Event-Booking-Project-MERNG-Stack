@@ -1,4 +1,4 @@
-import React,{ useState } from 'react'
+import React, {useState} from 'react'
 import {
     AppBar,
     Toolbar,
@@ -22,15 +22,16 @@ import navbarCss from './Navbar.module.css';
 import useMediaQuery from '@material-ui/core/useMediaQuery';
 // import image1 from '../Assets/Images/Nerd-amico.svg'
 import {makeStyles} from '@material-ui/core/styles';
-import {Link} from 'react-router-dom'
-import MobilRightMenuSlider from '@material-ui/core/Drawer'
-
+import {NavLink} from 'react-router-dom';
+import MobilRightMenuSlider from '@material-ui/core/Drawer';
+import AuthContext from '../../context/auth-context'
+import ExitToAppIcon from '@material-ui/icons/ExitToApp';
 // CSS STYLES
 const useStyles = makeStyles(
     theme => ({
         menuSliderContainer: {
             width: 250,
-            background: "#96c7d8",
+            background: "#206a5d",
             height: "100%",
 
         }
@@ -43,19 +44,19 @@ const useStyles = makeStyles(
 
         },
         darkBlue: {
-            color: "#0076a0",
+            color: "#206a5d",
 
         },
         lightBlue: {
-            color: "#96c7d8",
+            color: "#81b214",
 
         },
         whiteColor: {
-            color: "white",
+            color: "#81b214",
 
         },
         iconColor: {
-            color: "white",
+            color: "#81b214",
 
 
         },
@@ -74,84 +75,124 @@ const useStyles = makeStyles(
     })
 )
 
-const menuItems = [
-    {
-        listIcon: <EventSeatIcon/>,
-        listText: "Events",
-        listPath: "/events"
-    },
-    {
-        listIcon: <SupervisorAccountIcon/>,
-        listText: "Authenticate",
-        listPath: "/auth"
-    },
-    {
-        listIcon: <ConfirmationNumberIcon/>,
-        listText: "Bookings",
-        listPath: "/bookings"
-    }
-]
+// const menuItems = [
+//     {
+//         listIcon: <EventSeatIcon/>,
+//         listText: "Events",
+//         listPath: "/events"
+//     },
+//
+//     {
+//         listIcon: <ConfirmationNumberIcon/>,
+//         listText: "Bookings",
+//         listPath: "/bookings"
+//     }
+// ]
 
-const Navbar = () => {
+const Navbar = props => {
 
 
-    const [state,setState] = useState({
-        left:false
+    const [state, setState] = useState({
+        left: false
     })
-    const toggleSlider=(slider,open)=>()=>{
-        setState({...state,[slider]:open})
+    const toggleSlider = (slider, open) => () => {
+        setState({...state, [slider]: open})
     }
     const classes = useStyles();
     const matches = useMediaQuery('(min-width:775px)');
-    const slideList = slider =>(
+    const slideList = slider => (
+        <AuthContext.Consumer>
+            {context => {
+                return (
+                    <Box className={classes.menuSliderContainer}
+                         component="div"
+                         onClick={toggleSlider(slider, false)}>
+                        {/*<Avatar className={classes.avatar} src={image1} alt="Reuben Coutinho"/>*/}
+                        <Avatar className={classes.avatar} alt="Reuben Coutinho"/>
 
-        <Box className={classes.menuSliderContainer}
-             component="div"
-             onClick={toggleSlider(slider,false)}>
-            {/*<Avatar className={classes.avatar} src={image1} alt="Reuben Coutinho"/>*/}
-            <Avatar className={classes.avatar}  alt="Reuben Coutinho"/>
+                        <Divider/>
+                        <List>
 
-            <Divider/>
-            <List>
-                {menuItems.map((lsItem, key) => (
-                    <ListItem selected={true} button key={key} component={Link} to={lsItem.listPath}>
 
-                        <ListItemIcon className={classes.iconColor}>
-                            {lsItem.listIcon}
-                        </ListItemIcon>
-                        <ListItemText className={classes.whiteColor}>
-                            <div className={navbarCss.fontBitter}>
-                                {lsItem.listText}
-                            </div>
+                            <ListItem button component={NavLink} to={"/events"}>
+                                <ListItemIcon className={classes.iconColor}>
+                                    <EventSeatIcon/>
+                                </ListItemIcon>
+                                <ListItemText className={classes.whiteColor}>
+                                    <div className={navbarCss.fontBitter}>
+                                        Events
+                                    </div>
 
-                        </ListItemText>
+                                </ListItemText>
 
-                    </ListItem>
-                ))}
+                            </ListItem>
+                            {!context.token &&
+                            (<ListItem button component={NavLink} to={"/auth"}>
 
-            </List>
-        </Box>
+                                <ListItemIcon className={classes.iconColor}>
+                                    <SupervisorAccountIcon/>
+                                </ListItemIcon>
+                                <ListItemText className={classes.whiteColor}>
+                                    <div className={navbarCss.fontBitter}>
+                                        Authenticate
+                                    </div>
+
+                                </ListItemText>
+
+                            </ListItem>)}
+                            {context.token && (
+                                <>
+                                    <ListItem button component={NavLink} to={"/bookings"}>
+                                        <ListItemIcon className={classes.iconColor}>
+                                            <ConfirmationNumberIcon/>
+                                        </ListItemIcon>
+                                        <ListItemText className={classes.whiteColor}>
+                                            <div className={navbarCss.fontBitter}>
+                                                Bookings
+                                            </div>
+                                        </ListItemText>
+                                    </ListItem>
+
+                                    <ListItem button onClick={context.logout}>
+                                        <ListItemIcon className={classes.iconColor}>
+                                            <ExitToAppIcon/>
+                                        </ListItemIcon>
+                                        <ListItemText className={classes.whiteColor}>
+                                            <div className={navbarCss.fontBitter}>
+                                                Log Out
+                                            </div>
+                                        </ListItemText>
+                                    </ListItem>
+                                </>
+                            )
+                            }
+
+                        </List>
+                    </Box>
+                )
+            }}
+        </AuthContext.Consumer>
     )
     if (!matches) {
-        return (
 
+        return (
             <>
 
                 <Box component="nav">
                     <div className={classes.root}>
-                        <AppBar position="static" style={{background: "#0076a0"}}>
+                        <AppBar position="static" style={{background: "#206a5d"}}>
                             <Toolbar>
-                                <IconButton onClick={toggleSlider("left",true)}>
+                                <IconButton onClick={toggleSlider("left", true)}>
                                     <MenuRoundedIcon className={classes.whiteColor}></MenuRoundedIcon>
                                 </IconButton>
-                                <div></div>
-                                <Typography variant="h5" style={{ flexGrow:1 }} >
-                                    <div className={navbarCss.fontBitter}>
+
+                                <Typography variant="h5" style={{flexGrow: 1}}>
+                                    <div className={navbarCss.fontBitter} style={{color: "#81b214"}}>
                                         Go To Events
                                     </div>
                                 </Typography>
-                                <MobilRightMenuSlider  open={state.left}
-                                                       onClose={toggleSlider("left",false)}>
+                                <MobilRightMenuSlider open={state.left}
+                                                      onClose={toggleSlider("left", false)}>
                                     {slideList("left")}
                                 </MobilRightMenuSlider>
 
@@ -161,52 +202,103 @@ const Navbar = () => {
                 </Box>
 
             </>
+
         );
     }
 
 
     return (
 
-        <>
 
-            <Box component="nav">
-                <div className={classes.root}>
-                    <AppBar position="static" style={{background: "#0076a0"}}>
-                        <Toolbar>
+        <AuthContext.Consumer>
+            {context => {
 
-                            <div></div>
-                            <Typography variant="h5" style={{ flexGrow:1 }} >
-                                <div className={navbarCss.fontBitter}>
-                                    Go To Events
-                                </div>
-                            </Typography>
+                return (
+                    <Box component="nav">
+                        <div className={classes.root}>
+                            <AppBar position="static" style={{background: "#206a5d"}}>
+                                <Toolbar>
 
-                            {menuItems.map((lsItem, key) => (
-                                <Button  size="medium" style={{ marginLeft:"5px"}} key={key} component={Link} to={lsItem.listPath}>
-                                    <ListItemIcon  className={ `${classes.whiteColor} ${classes.icon}`}>
-                                        {lsItem.listIcon}
-                                    </ListItemIcon>
-                                    <ListItemText  className={classes.whiteColor}>
-                                        <div>
-                                            {lsItem.listText}
+                                    <div></div>
+                                    <Typography variant="h5" style={{flexGrow: 1}}>
+                                        <div className={navbarCss.fontBitter} style={{color: "#81b214"}}>
+                                            Go To Events
                                         </div>
+                                    </Typography>
+                                    {!context.token &&
+                                    (<Button size="medium" style={{marginLeft: "5px"}} component={NavLink}
+                                             to={"/auth"}>
+                                        <ListItemIcon className={`${classes.whiteColor} ${classes.icon}`}>
+                                            <SupervisorAccountIcon/>
+                                        </ListItemIcon>
+                                        <ListItemText className={classes.whiteColor}>
+                                            <div>
+                                                Authenticate
+                                            </div>
 
-                                    </ListItemText>
-                                </Button>
-                            ))}
+                                        </ListItemText>
+                                    </Button>)
+                                    }
+
+                                    <Button size="medium" style={{marginLeft: "5px"}}
+                                            component={NavLink} to={"/events"}>
+                                        <ListItemIcon className={`${classes.whiteColor} ${classes.icon}`}>
+                                            <EventSeatIcon/>
+                                        </ListItemIcon>
+                                        <ListItemText className={classes.whiteColor}>
+                                            <div>
+                                                Events
+                                            </div>
+
+                                        </ListItemText>
+                                    </Button>
+
+                                    {context.token && (
+                                        <>
+                                            <Button size="medium" style={{marginLeft: "5px"}}
+                                                    component={NavLink} to={"/bookings"}>
+                                                <ListItemIcon className={`${classes.whiteColor} ${classes.icon}`}>
+                                                    <ConfirmationNumberIcon/>
+                                                </ListItemIcon>
+                                                <ListItemText className={classes.whiteColor}>
+                                                    <div>
+                                                        Bookings
+                                                    </div>
+
+                                                </ListItemText>
+                                            </Button>
 
 
-                            <MobilRightMenuSlider  open={state.left}
-                                                   onClose={toggleSlider("left",false)}>
-                                {slideList("left")}
-                            </MobilRightMenuSlider>
 
-                        </Toolbar>
-                    </AppBar>
-                </div>
-            </Box>
+                                            <Button size="medium" style={{marginLeft: "5px"}}
+                                                    onClick={context.logout}>
+                                                <ListItemIcon className={`${classes.whiteColor} ${classes.icon}`}>
+                                                    <ExitToAppIcon/>
+                                                </ListItemIcon>
+                                                <ListItemText className={classes.whiteColor}>
+                                                    <div>
+                                                        Log Out
+                                                    </div>
 
-        </>
+                                                </ListItemText>
+                                            </Button>
+                                        </>
+
+                                    )
+                                    }
+                                    <MobilRightMenuSlider open={state.left}
+                                                          onClose={toggleSlider("left", false)}>
+                                        {slideList("left")}
+                                    </MobilRightMenuSlider>
+
+                                </Toolbar>
+                            </AppBar>
+                        </div>
+                    </Box>
+                );
+
+            }}
+        </AuthContext.Consumer>
     );
 }
 

@@ -3,15 +3,48 @@ import TextField from '@material-ui/core/TextField';
 import {makeStyles} from '@material-ui/core/styles';
 import Button from '@material-ui/core/Button';
 import Grid from '@material-ui/core/Grid';
-import ButtonGroup from '@material-ui/core/ButtonGroup';
 import Typography from '@material-ui/core/Typography';
-import { withStyles } from "@material-ui/core/styles";
+import {withStyles} from "@material-ui/core/styles";
+import AuthContext from '../context/auth-context'
+
+const CssTextField = withStyles({
+    root: {
+        '& label.Mui-focused': {
+            color: '#81b214',
+        },
+        '& .MuiInput-underline:after': {
+            borderBottomColor: '#81b214',
+        },
+        '& .MuiOutlinedInput-root': {
+            '& fieldset': {
+                borderColor: '#81b214',
+            },
+            '&:hover fieldset': {
+                borderColor: '#81b214',
+            },
+            '&.Mui-focused fieldset': {
+                borderColor: '#81b214',
+            },
+        },
+    },
+})(TextField);
+
+const ColorButton = withStyles((theme) => ({
+    root: {
+        color:  '#81b214',
+        backgroundColor: "#206a5d",
+        '&:hover': {
+            backgroundColor: "#206a5d",
+        },
+    },
+}))(Button);
+
 const useStyles = makeStyles((theme) => ({
     root: {
         '& .MuiTextField-root': {
             margin: theme.spacing(1),
 
-        },
+        }
     },
     header: {
         position: "absolute",
@@ -28,7 +61,10 @@ const useStyles = makeStyles((theme) => ({
         '& > *': {
             margin: theme.spacing(1),
         },
-    }
+    },
+    margin: {
+        margin: theme.spacing(5),
+    },
 }));
 
 class AuthPage extends Component {
@@ -39,13 +75,16 @@ class AuthPage extends Component {
     }
 
     state = {
-        isLogin: true
+        isLogin: false
     };
+
+    static contextType = AuthContext;
 
     submitHandler = (event) => {
         event.preventDefault();
         const email = this.emailEl.current.value;
         const password = this.passworldEl.current.value;
+        console.log(email,password)
         if (email.trim().length === 0 || password.trim().length === 0) {
             return
         }
@@ -60,8 +99,8 @@ class AuthPage extends Component {
             }
             `
         };
-        if(this.state.isLogin){
-           requestBody = {
+        if (this.state.isLogin) {
+            requestBody = {
                 query: `
             mutation {
             createUser(userInput:{ email:"${email}",password:"${password}"}){
@@ -85,28 +124,31 @@ class AuthPage extends Component {
             }
             return res.json();
         }).then(resData => {
-            console.log(resData);
+            if (resData.data.login.token) {
+                this.context.login(
+                    resData.data.login.token
+                    , resData.data.login.userId
+                    , resData.data.login.tokenExpiration)
+            }
+        }).catch(err => {
+            console.log(err);
         })
-            .catch(err => {
-                console.log(err);
-            })
     }
     switchModeHandler = () => {
-  this.setState(prevState=>{
-      return {isLogin:!prevState.isLogin}
-      }
-
-  )
+        this.setState(prevState => {
+                return {isLogin: !prevState.isLogin}
+            }
+        )
     }
 
- render() {
-     const { classes } = this.props;
+    render() {
+        const {classes} = this.props;
 
-    return (
+        return (
 
-        <div className={classes.header}>
-            <Typography component="div"
-                        style={{backgroundColor: '#cfe8fc', padding: "50px", margin: "20px", borderRadius: "10px",minWidth:"350px"}}>
+            <div className={classes.header}>
+                <Typography component="div"
+                            style={{backgroundColor: '#bfdcae', padding: "50px", margin: "20px", borderRadius: "10px"}}>
                     <Grid
                         container
                         direction="column"
@@ -114,41 +156,50 @@ class AuthPage extends Component {
                         alignItems="center"
 
                     >
-                        <form className={classes.root} noValidate autoComplete="off" onSubmit={this.submitHandler}>
+                        <form noValidate autoComplete="off" onSubmit={this.submitHandler}>
+                            <CssTextField style={{marginTop: "10px", display: "block", color: "green"}}
+                                          className={classes.margin}
+                                          label="Email-ID"
+                                          variant="outlined"
+                                          id="custom-css-outlined-input"
+                                          inputRef={this.emailEl}
+                            />
 
-                        <TextField style={{marginTop:"10px",display:"block"}} id="outlined-basic" label="Email-ID" variant="outlined" inputRef={this.emailEl}/>
+                            <CssTextField style={{marginTop: "10px", display: "block", color: "green"}}
+                                          className={classes.margin}
+                                          label="Password"
+                                          type="password"
+                                          variant="outlined"
+                                          id="custom-css-outlined-input"
+                                          inputRef={this.passworldEl}
+                            />
 
-                        <TextField style={{marginTop:"20px",display:"block"}}
-                            id="standard-password-input"
-                            label="Password"
-                            type="password"
-                            autoComplete="current-password"
-                                   variant="outlined"
-                                   inputRef={this.passworldEl}
-                        />
-
-                        <div className={classes.buttonGroup}>
+                            <div className={classes.buttonGroup}>
 
 
-                        <ButtonGroup  style={{marginTop:"30px"}} color="primary" aria-label="outlined secondary button group">
-                            <Button type="submit">Sign {this.state.isLogin ? 'Up!' : 'In!' }</Button>
-                            <Button onClick={this.switchModeHandler}>Switch to {this.state.isLogin ? 'Login ' : 'Sign Up' }</Button>
+                                <ColorButton type="submit" style={{ display:"block",marginTop:"20px"}} variant="contained" color="primary" className={classes.margin}>
+                                    Sign {this.state.isLogin ? 'Up!' : 'In!'}
+                                </ColorButton>
 
-                        </ButtonGroup>
-                        </div>
+                                <ColorButton style={{marginTop:"20px"}} variant="contained" color="primary" className={classes.margin} onClick={this.switchModeHandler}>
+                                    Switch
+                                    to {this.state.isLogin ? 'Login ' : 'Sign Up'}
+                                </ColorButton>
+
+                            </div>
                         </form>
 
-                </Grid>
+                    </Grid>
 
 
-        </Typography>
+                </Typography>
 
 
-</div>
+            </div>
 
-);
+        );
 
     }
 }
 
-export default withStyles(useStyles)(AuthPage);
+export default withStyles(useStyles, CssTextField)(AuthPage);
