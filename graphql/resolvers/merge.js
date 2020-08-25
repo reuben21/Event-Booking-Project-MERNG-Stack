@@ -34,14 +34,14 @@ const user = async userId => {
         throw err;
     }
 };
-const transformEvent = event =>{
+const transformEvent = event => {
     return {
         ...event._doc,
         _id: event.id,
         date: dateToString(event._doc.date),
         creator: user.bind(this, event.creator)
     };
-}
+};
 const transformBooking = booking =>{
     return {
         ...booking._doc,
@@ -56,6 +56,6 @@ exports.transformEvent = transformEvent;
 
 exports.transformBooking = transformBooking;
 
-exports.user = user;
+// exports.user = user;
 // exports.events = events;
-exports.singleEvent = singleEvent;
+// exports.singleEvent = singleEvent;

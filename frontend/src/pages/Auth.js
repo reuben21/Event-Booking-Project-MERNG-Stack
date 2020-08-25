@@ -65,6 +65,10 @@ const useStyles = makeStyles((theme) => ({
     margin: {
         margin: theme.spacing(5),
     },
+    multilineColor:{
+        color:'#206a5d',
+        fontSize:"20px"
+    }
 }));
 
 class AuthPage extends Component {
@@ -159,6 +163,9 @@ class AuthPage extends Component {
                         <form noValidate autoComplete="off" onSubmit={this.submitHandler}>
                             <CssTextField style={{marginTop: "10px", display: "block", color: "green"}}
                                           className={classes.margin}
+                                          InputProps={{
+                                              className: classes.multilineColor
+                                          }}
                                           label="Email-ID"
                                           variant="outlined"
                                           id="custom-css-outlined-input"
@@ -167,6 +174,9 @@ class AuthPage extends Component {
 
                             <CssTextField style={{marginTop: "10px", display: "block", color: "green"}}
                                           className={classes.margin}
+                                          InputProps={{
+                                              className: classes.multilineColor
+                                          }}
                                           label="Password"
                                           type="password"
                                           variant="outlined"

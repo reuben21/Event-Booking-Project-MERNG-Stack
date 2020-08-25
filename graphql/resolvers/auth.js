@@ -27,13 +27,13 @@ module.exports = {
     login: async ({email,password}) =>{
         const user = await User.findOne({email:email});
         if(!user){
-            throw new Error('Invalid Credentials')
+            throw new Error('Invalid User Name')
         }
         const isEqual = await bcrypt.compare(password,user.password);
         if (!isEqual){
-            throw new Error('Invalid Credentials')
+            throw new Error('Invalid Password')
         }
-        const token = jwt.sign({userId:user.id,email:user.email},'somesuperseckretkey',
+        const token = jwt.sign({userId:user.id,email:user.email},'reuben',
             {
                 expiresIn:'1h'
             } );

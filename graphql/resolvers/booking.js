@@ -2,11 +2,7 @@ const Event = require('../../models/event');
 const Booking = require('../../models/booking');
 const {transformBooking,transformEvent} = require('./merge');
 
-
-
-
 module.exports = {
-
     bookings: async (args,req) => {
         if (!req.isAuth){
             throw new Error('User is Not Authenticated')
@@ -26,7 +22,7 @@ module.exports = {
         }
         const fetchedEvent = await Event.findOne({ _id: args.eventId });
         const booking = new Booking({
-            user: '5f3ebea7cfd9ad38d8d21e3c',
+            user: req.userId,
             event: fetchedEvent
         });
         const result = await booking.save();
