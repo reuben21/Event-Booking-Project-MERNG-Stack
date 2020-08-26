@@ -461,7 +461,7 @@ class EventsPage extends Component {
                     </div>)}
                 {/*To Get The List of Events*/}
 
-                <EventList events={eventList}/>
+                <EventList events={eventList} authUserId={this.context.userId}/>
 
             </>
         );
