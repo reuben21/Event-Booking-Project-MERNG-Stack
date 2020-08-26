@@ -115,9 +115,9 @@ class EventsPage extends Component {
 
     }
 
-    componentDidUpdate(prevProps, prevState, snapshot) {
-        this.fetchEvents();
-    }
+    // componentDidUpdate(prevProps, prevState, snapshot) {
+    //     this.fetchEvents();
+    // }
 
     componentDidMount() {
         this.fetchEvents();
@@ -186,7 +186,21 @@ class EventsPage extends Component {
             }
             return res.json();
         }).then(resData => {
+            this.setState(prevState =>{
+                const updatedEvents = [...prevState.events];
+                updatedEvents.push({
+                    _id:this.context.userId,
+                    title:resData.data.createEvent.title,
+                    description:resData.data.createEvent.description,
+                    date:resData.data.createEvent.date,
+                    price:resData.data.createEvent.price,
+                    creator :{
+                        _id:this.context.userId
 
+                    }
+                });
+                return {events:updatedEvents}
+            })
         }).catch(err => {
             console.log(err);
         })
