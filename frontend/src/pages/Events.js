@@ -12,14 +12,12 @@ import {
     MuiPickersUtilsProvider,
     KeyboardDatePicker,
 } from '@material-ui/pickers';
-import Card from '@material-ui/core/Card';
-import CardActions from '@material-ui/core/CardActions';
-import CardContent from '@material-ui/core/CardContent';
-import Typography from '@material-ui/core/Typography';
+import EventList from '../components/Event/EventList/EventList'
 //code updated
 // import TextareaAutosize from '@material-ui/core/TextareaAutosize';
 // import useMediaQuery from "@material-ui/core/useMediaQuery";
 import AuthContext from '../context/auth-context'
+
 const CssTextField = withStyles({
     root: {
         '& label.Mui-focused': {
@@ -72,7 +70,6 @@ const defaultMaterialTheme = createMuiTheme({
 });
 
 
-
 const useStyles = makeStyles((theme) => ({
     margin: {
         margin: theme.spacing(5),
@@ -88,17 +85,17 @@ const useStyles = makeStyles((theme) => ({
     multilineColor: {
         color: '#206a5d',
         fontSize: "20px",
-        width:"250px"
+        width: "250px"
     },
-    modalStyle:{
+    modalStyle: {
         top: `50%`,
         left: `50%`,
         transform: `translate(-50%, -50%)`,
         width: "70%",
         height: "400px",
         backgroundColor: "#bfdcae",
-        outlineColor:"#206a5d",
-        borderColor:"#206a5d",
+        outlineColor: "#206a5d",
+        borderColor: "#206a5d",
     }
 }));
 
@@ -110,12 +107,18 @@ class EventsPage extends Component {
         this.price = React.createRef();
         this.description = React.createRef();
     }
-    state={
-        open:false,
-        selectedDate:new Date(),
-        events:[]
+
+    state = {
+        open: false,
+        selectedDate: new Date(),
+        events: []
 
     }
+
+    componentDidUpdate(prevProps, prevState, snapshot) {
+        this.fetchEvents();
+    }
+
     componentDidMount() {
         this.fetchEvents();
     }
@@ -123,18 +126,18 @@ class EventsPage extends Component {
     static contextType = AuthContext;
     //
     handleDateChange = (date) => {
-       this.setState({selectedDate:date})
+        this.setState({selectedDate: date})
     };
 
     // const {classes} = this.props;
 
 
     handleOpen = () => {
-        this.setState({open:true})
+        this.setState({open: true})
     };
 
-   handleClose = () => {
-       this.setState({open:false})
+    handleClose = () => {
+        this.setState({open: false})
     };
 
     handleSubmit = (evt) => {
@@ -165,17 +168,17 @@ class EventsPage extends Component {
           }
         `
         };
-        console.log(requestBody)
+
 
         const token = this.context.token;
-        console.log("The Token is:- ",token)
+
 
         fetch('http://localhost:4000/graphql', {
             method: 'POST',
             body: JSON.stringify(requestBody),
             headers: {
                 'Content-Type': 'application/json',
-                'Authorization':'Bearer '+token
+                'Authorization': 'Bearer ' + token
             }
         }).then(res => {
             if (res.status !== 200 && res.status !== 201) {
@@ -183,14 +186,14 @@ class EventsPage extends Component {
             }
             return res.json();
         }).then(resData => {
-            console.log(resData)
+
         }).catch(err => {
             console.log(err);
         })
-
+        this.handleClose()
     }
 
-    fetchEvents = ()=>{
+    fetchEvents = () => {
         const requestBody = {
             query: `
           query {
@@ -205,7 +208,6 @@ class EventsPage extends Component {
           }
         `
         };
-        console.log(requestBody)
 
 
 
@@ -222,266 +224,245 @@ class EventsPage extends Component {
             return res.json();
         }).then(resData => {
             const events = resData.data.events;
-            this.setState({events:events})
+            this.setState({events: events})
         }).catch(err => {
             console.log(err);
         })
     }
 
-   getModalStyle=()=> {
+    getModalStyle = () => {
 
         return {
-            margin:"100px auto",
-            padding:"100px",
+            margin: "100px auto",
+            padding: "100px",
             width: "70%",
             height: "400px",
             backgroundColor: "#bfdcae",
-            outlineColor:"#206a5d",
-            borderColor:"#206a5d",
+            outlineColor: "#206a5d",
+            borderColor: "#206a5d",
 
         };
     }
-    getModalStyleMobile=()=> {
-       return {
-           margin:"60px auto",
+    getModalStyleMobile = () => {
+        return {
+            margin: "60px auto",
 
-        padding: "25px",
-           width: "280px",
-           height: "400px",
+            padding: "25px",
+            width: "280px",
+            height: "400px",
             backgroundColor: "#bfdcae",
-            outlineColor:"#206a5d",
-            borderColor:"#206a5d",
+            outlineColor: "#206a5d",
+            borderColor: "#206a5d",
 
         };
     }
-    render(){
+
+    render() {
         const {
             selectedDate
         } = this.state;
-        const eventList = this.state.events.map(event=>{
-            return (
-                <Card key={event._id}style={{
-                    width: "275px",
-                    margin:"20px",
-                    backgroundColor:"#bfdcae"
-                }}>
-                    <CardContent>
-                        <Typography style={{
-                            fontSize:"14px"
-                        }} color="textSecondary" gutterBottom>
-                            Word of the Day
-                        </Typography>
-                        <Typography variant="h5" component="h2">
-                            Hello Testing
-                        </Typography>
-                        <Typography style={{
-                            marginBottom: "12px"
-                        }} color="textSecondary">
-                            adjective
-                        </Typography>
-                        <Typography variant="body2" component="p">
-                            well meaning and kindly.
-                            <br />
-                            {'"a benevolent smile"'}
-                        </Typography>
-                    </CardContent>
-                    <CardActions>
-                        <Button size="small">Learn More</Button>
-                    </CardActions>
-                </Card>
-            );
-        });
+        const eventList = this.state.events;
         const matches = window.innerWidth < 800;
-        console.log(matches)
+
         const {classes} = this.props;
         return (
             <>
-            {this.context.token && (
-            <div style={{
-                margin: "80px auto",
-                maxWidth: "300px",
-                height: "400px",
-                border: "1px solid #81b214",
-                borderRadius: "20px"
-
-            }}>
-
-                    <Grid
-                        container
-
-                        justify="center"
-                        alignItems="center"
-                        style={{
-                            marginTop: "150px",
-                            display: "flex"
-
-                        }}
-                    >
-                        <ColorButton type="submit" variant="contained"
-                                     color="primary" onClick={this.handleOpen}>
-                            Create Event
-                        </ColorButton>
-                    </Grid>
+                {this.context.token && (
+                    <div style={{
+                        margin: "80px auto",
+                        maxWidth: "300px",
+                        height: "100px",
+                        border: "1px solid #81b214",
+                        borderRadius: "20px",
 
 
-                <Modal
-                    open={this.state.open}
-                    onClose={this.handleClose}
-                    aria-labelledby="simple-modal-title"
-                    aria-describedby="simple-modal-description"
+                    }}>
 
-                >
-                    {!matches ? <div style={this.getModalStyle()} className={classes.paper}>
-                            <form onSubmit={this.handleSubmit}>
-                                <div>
-                                    <Grid
-                                        container
-                                        direction="column"
-                                        justify="center"
-                                        alignItems="center"
+                        <Grid
+                            container
 
-                                    >
-                                        <CssTextField style={{marginTop: "20px", display: "block",}}
-                                                      InputProps={{
-                                                          className: classes.multilineColor
-                                                      }}
-                                                      label=" Title "
-                                                      variant="outlined"
+                            justify="center"
+                            alignItems="center"
+                            style={{
+                                marginTop: "30px",
+                                display: "flex"
 
-                                                      inputRef={this.title}
-
-                                        />
-                                        <CssTextField style={{marginTop: "20px", display: "block", color: "green"}}
-                                                      InputProps={{
-                                                          className: classes.multilineColor
-                                                      }}
-                                                      label=" Price "
-                                                      variant="outlined"
-
-                                                      inputRef={this.price}
-                                        />
-                                        <textarea style={{
-                                            backgroundColor:"#bfdcae",
-                                            marginTop: "20px",
-                                            width:"262px",
-                                            border:"1px solid #81b214",
-                                            color:"black",
-                                            outline:"#81b214",
-                                            fontSize:"20px"
-                                        }} rows={"4"} cols={"50"} ref={this.description}  placeholder="  Description"/>
-                                        <MuiPickersUtilsProvider utils={DateFnsUtils}>
-                                            <Grid container justify="space-around">
-                                                <ThemeProvider theme={defaultMaterialTheme}>
-                                                    <KeyboardDatePicker
-
-                                                        margin="normal"
-                                                        id="date-picker-dialog"
-                                                        label="Date picker dialog"
-                                                        format="MM/dd/yyyy"
-                                                        value={selectedDate}
-                                                        onChange={this.handleDateChange}
-                                                        KeyboardButtonProps={{
-                                                            'aria-label': 'change date',
-                                                        }}
-                                                    />
-                                                </ThemeProvider>
+                            }}
+                        >
+                            <ColorButton type="submit" variant="contained"
+                                         color="primary" onClick={this.handleOpen}>
+                                Create Event
+                            </ColorButton>
+                        </Grid>
 
 
+                        <Modal
+                            open={this.state.open}
+                            onClose={this.handleClose}
+                            aria-labelledby="simple-modal-title"
+                            aria-describedby="simple-modal-description"
+
+                        >
+                            {!matches ? <div style={this.getModalStyle()} className={classes.paper}>
+                                    <form onSubmit={this.handleSubmit}>
+                                        <div>
+                                            <Grid
+                                                container
+                                                direction="column"
+                                                justify="center"
+                                                alignItems="center"
+
+                                            >
+                                                <CssTextField style={{marginTop: "20px", display: "block",}}
+                                                              InputProps={{
+                                                                  className: classes.multilineColor
+                                                              }}
+                                                              label=" Title "
+                                                              variant="outlined"
+
+                                                              inputRef={this.title}
+
+                                                />
+                                                <CssTextField style={{marginTop: "20px", display: "block", color: "green"}}
+                                                              InputProps={{
+                                                                  className: classes.multilineColor
+                                                              }}
+                                                              label=" Price "
+                                                              variant="outlined"
+
+                                                              inputRef={this.price}
+                                                />
+                                                <textarea style={{
+                                                    backgroundColor: "#bfdcae",
+                                                    marginTop: "20px",
+                                                    width: "262px",
+                                                    border: "1px solid #81b214",
+                                                    color: "black",
+                                                    outline: "#81b214",
+                                                    fontSize: "20px"
+                                                }} rows={"4"} cols={"50"} ref={this.description}
+                                                          placeholder="  Description"/>
+                                                <MuiPickersUtilsProvider utils={DateFnsUtils}>
+                                                    <Grid container justify="space-around">
+                                                        <ThemeProvider theme={defaultMaterialTheme}>
+                                                            <KeyboardDatePicker
+
+                                                                margin="normal"
+                                                                id="date-picker-dialog"
+                                                                label="Date picker dialog"
+                                                                format="MM/dd/yyyy"
+                                                                value={selectedDate}
+                                                                onChange={this.handleDateChange}
+                                                                KeyboardButtonProps={{
+                                                                    'aria-label': 'change date',
+                                                                }}
+                                                            />
+                                                        </ThemeProvider>
+
+
+                                                    </Grid>
+                                                </MuiPickersUtilsProvider>
+                                                <ColorButton style={{marginTop: "20px", display: "block", color: "#81b214"}}
+                                                             type="submit"
+                                                             variant="contained"
+                                                             color="primary" onClick={this.handleOpen}>
+                                                    Create Event
+                                                </ColorButton>
                                             </Grid>
-                                        </MuiPickersUtilsProvider>
-                                        <ColorButton style={{marginTop: "20px", display: "block", color: "#81b214"}} type="submit"
-                                                     variant="contained"
-                                                     color="primary" onClick={this.handleOpen}>
-                                            Create Event
-                                        </ColorButton>
-                                    </Grid>
 
+                                        </div>
+
+                                    </form>
                                 </div>
 
-                            </form>
-                        </div>
+                                : <div style={this.getModalStyleMobile()} className={classes.paper}>
+                                    <form onSubmit={this.handleSubmit}>
+                                        <div>
+                                            <Grid
+                                                container
+                                                direction="column"
 
-                    :  <div style={this.getModalStyleMobile()} className={classes.paper}>
-                            <form onSubmit={this.handleSubmit}>
-                                <div>
-                                    <Grid
-                                        container
-                                        direction="column"
+                                                justify="center"
+                                                alignItems="center"
 
-                                        justify="center"
-                                        alignItems="center"
+                                            >
+                                                <CssTextField
+                                                    style={{marginTop: "20px", marginLeft: "-10px", display: "block",}}
+                                                    InputProps={{
+                                                        className: classes.multilineColor
+                                                    }}
+                                                    label=" Title "
+                                                    variant="outlined"
+                                                    id="custom-css-outlined-input"
+                                                    inputRef={this.title}
+                                                />
+                                                <CssTextField style={{
+                                                    marginTop: "20px",
+                                                    marginLeft: "-10px",
+                                                    display: "block",
+                                                    color: "green"
+                                                }}
+                                                              InputProps={{
+                                                                  className: classes.multilineColor
+                                                              }}
+                                                              label=" Price "
+                                                              variant="outlined"
+                                                              id="custom-css-outlined-input"
+                                                              inputRef={this.price}
+                                                />
+                                                <textarea style={{
+                                                    backgroundColor: "#bfdcae",
+                                                    marginTop: "20px",
+                                                    marginLeft: "-10px",
+                                                    width: "260px",
+                                                    border: "1px solid #81b214",
+                                                    color: "black",
+                                                    outline: "#81b214",
+                                                    fontSize: "20px"
+                                                }} rows={"4"} cols={"50"} ref={this.description}
+                                                          placeholder="Description"/>
+                                                <MuiPickersUtilsProvider utils={DateFnsUtils}>
+                                                    <Grid container justify="space-around">
+                                                        <ThemeProvider theme={defaultMaterialTheme}>
+                                                            <KeyboardDatePicker
 
-                                    >
-                                        <CssTextField style={{marginTop: "20px", marginLeft:"-10px",display: "block",}}
-                                                      InputProps={{
-                                                          className: classes.multilineColor
-                                                      }}
-                                                      label=" Title "
-                                                      variant="outlined"
-                                                      id="custom-css-outlined-input"
-                                                      inputRef={this.title}
-                                        />
-                                        <CssTextField style={{marginTop: "20px",marginLeft:"-10px",display: "block", color: "green"}}
-                                                      InputProps={{
-                                                          className: classes.multilineColor
-                                                      }}
-                                                      label=" Price "
-                                                      variant="outlined"
-                                                      id="custom-css-outlined-input"
-                                                      inputRef={this.price}
-                                        />
-                                        <textarea style={{
-                                            backgroundColor:"#bfdcae",
-                                            marginTop: "20px",
-                                            marginLeft:"-10px",
-                                            width:"260px",
-                                            border:"1px solid #81b214",
-                                            color:"black",
-                                            outline:"#81b214",
-                                            fontSize:"20px"
-                                        }} rows={"4"} cols={"50"} ref={this.description} placeholder="Description"/>
-                                        <MuiPickersUtilsProvider utils={DateFnsUtils}>
-                                            <Grid container justify="space-around">
-                                                <ThemeProvider theme={defaultMaterialTheme}>
-                                                    <KeyboardDatePicker
-
-                                                        margin="normal"
-                                                        id="date-picker-dialog"
-                                                        label="Date picker dialog"
-                                                        format="MM/dd/yyyy"
-                                                        value={selectedDate}
-                                                        onChange={this.handleDateChange}
-                                                        KeyboardButtonProps={{
-                                                            'aria-label': 'change date',
-                                                        }}
-                                                    />
-                                                </ThemeProvider>
+                                                                margin="normal"
+                                                                id="date-picker-dialog"
+                                                                label="Date picker dialog"
+                                                                format="MM/dd/yyyy"
+                                                                value={selectedDate}
+                                                                onChange={this.handleDateChange}
+                                                                KeyboardButtonProps={{
+                                                                    'aria-label': 'change date',
+                                                                }}
+                                                            />
+                                                        </ThemeProvider>
 
 
+                                                    </Grid>
+                                                </MuiPickersUtilsProvider>
+                                                <ColorButton
+                                                    style={{marginTop: "20px", display: "block", color: "#81b214"}}
+                                                    type="submit"
+                                                    variant="contained"
+                                                    color="primary" onClick={this.handleOpen}>
+                                                    Create Event
+                                                </ColorButton>
                                             </Grid>
-                                        </MuiPickersUtilsProvider>
-                                        <ColorButton style={{marginTop: "20px", display: "block", color: "#81b214"}} type="submit"
-                                                     variant="contained"
-                                                     color="primary" onClick={this.handleOpen}>
-                                            Create Event
-                                        </ColorButton>
-                                    </Grid>
 
-                                </div>
+                                        </div>
 
-                            </form>
-                        </div>}
-                </Modal>
-            </div>  )}
-            {/*To Get The List of Events*/}
+                                    </form>
+                                </div>}
+                        </Modal>
+                    </div>)}
+                {/*To Get The List of Events*/}
 
-                {eventList}
+                <EventList events={eventList}/>
 
             </>
         );
     }
-
-
 
 
 }

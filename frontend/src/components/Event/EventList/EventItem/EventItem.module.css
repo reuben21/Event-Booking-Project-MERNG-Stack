@@ -1,0 +1,22 @@
+.modalStyle {
+    margin: 100px auto;
+    padding: 100px;
+    width: 70%;
+    height: 400px;
+    background-color: #bfdcae;
+    outline-color: #206a5d;
+    border-color: #206a5d;
+}
+@media (max-width: 767px) {
+    .modalStyle {
+        margin: 60px auto;
+
+        padding: 25px;
+        width: 250px;
+        height: 400px;
+
+        background-color: #bfdcae;
+        outline-color: #206a5d;
+        border-color: #206a5d;
+    }
+}
