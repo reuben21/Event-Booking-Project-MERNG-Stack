@@ -104,6 +104,7 @@ class eventItem extends Component {
                                      color="primary" onClick={this.handleOpen}>
                             View Details
                         </ColorButton>
+                        <p>Your the owner of this Event</p>
                     </CardContent>
 
                 </Card>

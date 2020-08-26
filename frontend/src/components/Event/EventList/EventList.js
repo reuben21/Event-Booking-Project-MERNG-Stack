@@ -4,7 +4,14 @@ const eventList=props => {
     const event = props.events.map(event=>{
         return (
 
-            <EventItem key={event._id} eventid={event._id} price={event.price}description={event.description} title={event.title}/>
+            <EventItem key={event._id}
+                       eventid={event._id}
+                       price={event.price}
+                       description={event.description}
+                       title={event.title}
+                        userId={props.authUserId}
+                       creatorId={event.creator._id}
+            />
         );
 
 
