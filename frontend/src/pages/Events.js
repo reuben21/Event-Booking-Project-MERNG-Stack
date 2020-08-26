@@ -216,7 +216,8 @@ class EventsPage extends Component {
         console.log(matches)
         const {classes} = this.props;
         return (
-
+            <>
+            {this.context.token && (
             <div style={{
                 margin: "80px auto",
                 maxWidth: "300px",
@@ -225,22 +226,25 @@ class EventsPage extends Component {
                 borderRadius: "20px"
 
             }}>
-                <Grid
-                    container
 
-                    justify="center"
-                    alignItems="center"
-                    style={{
-                        marginTop: "150px",
-                        display: "flex"
+                    <Grid
+                        container
 
-                    }}
-                >
-                    <ColorButton type="submit" variant="contained"
-                                 color="primary" onClick={this.handleOpen}>
-                        Create Event
-                    </ColorButton>
-                </Grid>
+                        justify="center"
+                        alignItems="center"
+                        style={{
+                            marginTop: "150px",
+                            display: "flex"
+
+                        }}
+                    >
+                        <ColorButton type="submit" variant="contained"
+                                     color="primary" onClick={this.handleOpen}>
+                            Create Event
+                        </ColorButton>
+                    </Grid>
+
+
                 <Modal
                     open={this.state.open}
                     onClose={this.handleClose}
@@ -389,7 +393,8 @@ class EventsPage extends Component {
                             </form>
                         </div>}
                 </Modal>
-            </div>
+            </div>  )}
+            </>
         );
     }
 
