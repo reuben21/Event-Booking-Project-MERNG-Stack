@@ -12,6 +12,7 @@ import {
     MuiPickersUtilsProvider,
     KeyboardDatePicker,
 } from '@material-ui/pickers';
+//code updated
 // import TextareaAutosize from '@material-ui/core/TextareaAutosize';
 // import useMediaQuery from "@material-ui/core/useMediaQuery";
 import AuthContext from '../context/auth-context'
@@ -281,7 +282,7 @@ class EventsPage extends Component {
                                             marginTop: "20px",
                                             width:"262px",
                                             border:"1px solid #81b214",
-                                            color:"#206a5d",
+                                            color:"black",
                                             outline:"#81b214",
                                             fontSize:"20px"
                                         }} rows={"4"} cols={"50"} ref={this.description}  placeholder="  Description"/>
