@@ -203,7 +203,9 @@ class EventsPage extends Component {
               description
               date
               price
-             
+              creator{
+              _id
+              }
             }
           }
         `
@@ -223,6 +225,7 @@ class EventsPage extends Component {
             }
             return res.json();
         }).then(resData => {
+            console.log(resData)
             const events = resData.data.events;
             this.setState({events: events})
         }).catch(err => {

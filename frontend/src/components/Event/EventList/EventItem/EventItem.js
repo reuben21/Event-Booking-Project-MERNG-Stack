@@ -80,9 +80,19 @@ class eventItem extends Component {
                             marginBottom: "10px"
                         }} variant="h5" component="h2">
                             {this.props.title}
+                            <br/>
+                            <Typography style={{
+                                color: "#206a5d",
+                                display:"block !important",
 
+                            }} component="p">
+
+                            Price: ${this.props.price}
                         </Typography>
 
+
+
+                        </Typography>
                     </CardContent>
                     <CardContent>
                         <ColorButton style={{color: "#81b214",width: "80px",
