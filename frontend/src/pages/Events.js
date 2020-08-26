@@ -12,6 +12,10 @@ import {
     MuiPickersUtilsProvider,
     KeyboardDatePicker,
 } from '@material-ui/pickers';
+import Card from '@material-ui/core/Card';
+import CardActions from '@material-ui/core/CardActions';
+import CardContent from '@material-ui/core/CardContent';
+import Typography from '@material-ui/core/Typography';
 //code updated
 // import TextareaAutosize from '@material-ui/core/TextareaAutosize';
 // import useMediaQuery from "@material-ui/core/useMediaQuery";
@@ -108,8 +112,12 @@ class EventsPage extends Component {
     }
     state={
         open:false,
-        selectedDate:new Date()
+        selectedDate:new Date(),
+        events:[]
 
+    }
+    componentDidMount() {
+        this.fetchEvents();
     }
 
     static contextType = AuthContext;
@@ -182,6 +190,44 @@ class EventsPage extends Component {
 
     }
 
+    fetchEvents = ()=>{
+        const requestBody = {
+            query: `
+          query {
+            events {
+              _id
+              title
+              description
+              date
+              price
+             
+            }
+          }
+        `
+        };
+        console.log(requestBody)
+
+
+
+        fetch('http://localhost:4000/graphql', {
+            method: 'POST',
+            body: JSON.stringify(requestBody),
+            headers: {
+                'Content-Type': 'application/json'
+            }
+        }).then(res => {
+            if (res.status !== 200 && res.status !== 201) {
+                throw new Error('Failed');
+            }
+            return res.json();
+        }).then(resData => {
+            const events = resData.data.events;
+            this.setState({events:events})
+        }).catch(err => {
+            console.log(err);
+        })
+    }
+
    getModalStyle=()=> {
 
         return {
@@ -212,6 +258,39 @@ class EventsPage extends Component {
         const {
             selectedDate
         } = this.state;
+        const eventList = this.state.events.map(event=>{
+            return (
+                <Card key={event._id}style={{
+                    width: "275px",
+                    margin:"20px",
+                    backgroundColor:"#bfdcae"
+                }}>
+                    <CardContent>
+                        <Typography style={{
+                            fontSize:"14px"
+                        }} color="textSecondary" gutterBottom>
+                            Word of the Day
+                        </Typography>
+                        <Typography variant="h5" component="h2">
+                            Hello Testing
+                        </Typography>
+                        <Typography style={{
+                            marginBottom: "12px"
+                        }} color="textSecondary">
+                            adjective
+                        </Typography>
+                        <Typography variant="body2" component="p">
+                            well meaning and kindly.
+                            <br />
+                            {'"a benevolent smile"'}
+                        </Typography>
+                    </CardContent>
+                    <CardActions>
+                        <Button size="small">Learn More</Button>
+                    </CardActions>
+                </Card>
+            );
+        });
         const matches = window.innerWidth < 800;
         console.log(matches)
         const {classes} = this.props;
@@ -268,7 +347,7 @@ class EventsPage extends Component {
                                                       }}
                                                       label=" Title "
                                                       variant="outlined"
-                                                      id="custom-css-outlined-input"
+
                                                       inputRef={this.title}
 
                                         />
@@ -278,7 +357,7 @@ class EventsPage extends Component {
                                                       }}
                                                       label=" Price "
                                                       variant="outlined"
-                                                      id="custom-css-outlined-input"
+
                                                       inputRef={this.price}
                                         />
                                         <textarea style={{
@@ -394,6 +473,10 @@ class EventsPage extends Component {
                         </div>}
                 </Modal>
             </div>  )}
+            {/*To Get The List of Events*/}
+
+                {eventList}
+
             </>
         );
     }
