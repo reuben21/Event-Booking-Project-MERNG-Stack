@@ -95,7 +95,7 @@ class eventItem extends Component {
                         </Typography>
                     </CardContent>
                     <CardContent>
-                        <ColorButton style={{color: "#81b214",width: "80px",
+                        {this.props.userId === this.props.creatorId ?<p>Your the owner of this Event</p>: <ColorButton style={{color: "#81b214",width: "80px",
                             borderRadius:"10px",
                             justifyContent:'justify-center'
                             }}
@@ -104,7 +104,7 @@ class eventItem extends Component {
                                      color="primary" onClick={this.handleOpen}>
                             View Details
                         </ColorButton>
-                        <p>Your the owner of this Event</p>
+                        }
                     </CardContent>
 
                 </Card>
