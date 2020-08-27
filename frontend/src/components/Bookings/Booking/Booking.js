@@ -78,3 +78,5 @@ const Booking = props =>{
         </Card>
     );
 }
+
+export default Booking;
