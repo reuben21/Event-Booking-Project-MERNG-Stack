@@ -46,6 +46,7 @@ class eventItem extends Component {
         this.setState({open: false})
     };
 
+
     bookEventHandler = () => {
         this.setState({isLoading:true})
         const requestBody = {

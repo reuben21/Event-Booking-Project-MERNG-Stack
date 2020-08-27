@@ -28,7 +28,50 @@ class BookingsPage extends Component {
     componentDidMount() {
         this.fetchBookings()
     }
+
+    onDeleteHandler =(bookingId)=>{
+        const requestBody = {
+            query: `
+          mutation {
+            cancelBooking(bookingId:"${bookingId}") {
+                  _id
+                title
+            }
+          }
+          
+        `
+        };
+
+
+        const token = this.context.token;
+        fetch('http://localhost:4000/graphql', {
+            method: 'POST',
+            body: JSON.stringify(requestBody),
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': 'Bearer ' + token
+            }
+        }).then(res => {
+            if (res.status !== 200 && res.status !== 201) {
+                throw new Error('Failed');
+            }
+            return res.json();
+        }).then(resData => {
+            this.setState(prevState=>{
+                const updatedBookings =  prevState.bookings.filter(booking=>{
+                    return booking._id !== bookingId
+                });
+                return { bookings:updatedBookings,isLoading:false}
+            })
+        }).catch(err => {
+            console.log(err);
+
+        })
+    }
+
     static contextType = AuthContext;
+
+
     fetchBookings = () => {
         this.setState({isLoading: true})
         const requestBody = {
@@ -135,7 +178,12 @@ class BookingsPage extends Component {
                                         }}
                                                      type="submit"
                                                      variant="contained"
-                                                     color="primary" onClick={this.handleOpen}>
+                                                     color="primary" onClick={()=>{
+                                                         this.onDeleteHandler(booking._id
+
+                                                         )
+                                                     }
+                                        }>
                                             <div className={EventItemCSS.fontClassSans}>
                                                 Cancel Booking
                                             </div>
