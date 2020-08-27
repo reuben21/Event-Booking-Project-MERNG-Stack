@@ -89,7 +89,7 @@ class AuthPage extends Component {
         event.preventDefault();
         const email = this.emailEl.current.value;
         const password = this.passworldEl.current.value;
-        console.log(email,password)
+
         if (email.trim().length === 0 || password.trim().length === 0) {
             return
         }
