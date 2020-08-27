@@ -45,17 +45,42 @@ class eventItem extends Component {
     handleClose = () => {
         this.setState({open: false})
     };
-    getModalStyle = () => {
 
-        return {
-            margin: "100px auto",
-            padding: "100px",
-            width: "70%",
-            height: "400px",
-            backgroundColor: "#bfdcae",
-            outlineColor: "#206a5d",
-            borderColor: "#206a5d",
+    bookEventHandler = () => {
+        this.setState({isLoading:true})
+        const requestBody = {
+            query: `
+          mutation {
+            bookEvent(eventId:"${this.props.eventid}") {
+                  _id
+             createdAt
+             updatedAt
+            }
+          }
+          
+        `
         };
+
+
+        const token = this.context.token;
+        fetch('http://localhost:4000/graphql', {
+            method: 'POST',
+            body: JSON.stringify(requestBody),
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': 'Bearer ' + token
+            }
+        }).then(res => {
+            if (res.status !== 200 && res.status !== 201) {
+                throw new Error('Failed');
+            }
+            return res.json();
+        }).then(resData => {
+                    console.log(resData)
+        }).catch(err => {
+            console.log(err);
+
+        })
     }
     render() {
 
@@ -162,7 +187,7 @@ class eventItem extends Component {
                             {this.props.description}
                              </div>
                         </Typography>
-                        {/*{this.context.token && (*/}
+                        {this.context.token && (
                             <ColorButton
                             style={{margin: "20px auto",
                                 display: "block",
@@ -172,10 +197,10 @@ class eventItem extends Component {
                                 }}
                             type="submit"
                             variant="contained"
-                            color="primary" >
+                            color="primary" onClick={this.bookEventHandler}>
                            Book Event
                         </ColorButton>
-                        {/*// )}*/}
+                        )}
                         {/*{!this.context.token && (<div style={{margin: "20px auto",*/}
                         {/*    display: "block",*/}
                         {/*    color: "#81b214",*/}
