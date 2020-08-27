@@ -13,7 +13,7 @@ import {
     Box
 } from "@material-ui/core"
 import Button from '@material-ui/core/Button';
-
+import MovieImage from './Movie Night-amico.png'
 import ConfirmationNumberIcon from '@material-ui/icons/ConfirmationNumber';
 import SupervisorAccountIcon from '@material-ui/icons/SupervisorAccount';
 import EventSeatIcon from '@material-ui/icons/EventSeat';
@@ -108,7 +108,7 @@ const Navbar = props => {
                          component="div"
                          onClick={toggleSlider(slider, false)}>
                         {/*<Avatar className={classes.avatar} src={image1} alt="Reuben Coutinho"/>*/}
-                        <Avatar className={classes.avatar} alt="Reuben Coutinho"/>
+                        <Avatar className={classes.avatar} src={MovieImage} alt="Reuben Coutinho"/>
 
                         <Divider/>
                         <List>

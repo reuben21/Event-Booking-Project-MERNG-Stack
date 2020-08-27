@@ -22,6 +22,11 @@
     font-family: 'Open Sans', sans-serif;
 }
 
+.fontClassPrice {
+    color: #206a5d;
+    font-size: 20px !important;
+
+}
 @media (max-width: 767px) {
     .modalStyle {
         margin: 60px auto;

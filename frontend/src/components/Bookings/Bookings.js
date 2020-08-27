@@ -1,11 +1,11 @@
 import React from "react";
 // import EventItem from "../Event/EventList/EventItem/EventItem";
 import Booking2 from "./Booking/Booking.js";
-const Bookings1 = props =>{
+const Bookings = props =>{
     const Booking = props.bookings.map(booking=>{
         return (
 
-            <Booking2
+            <Booking2 key={booking._id}
                        eventid={booking._id}
                        eventTitle={booking.event.title}
                        DateOfEvent={new Date(booking.createdAt).toLocaleDateString()}
@@ -20,4 +20,4 @@ const Bookings1 = props =>{
     );
 
 }
-export default Bookings1;
+export default Bookings;

@@ -61,8 +61,6 @@ class eventItem extends Component {
           
         `
         };
-
-
         const token = this.context.token;
         fetch('http://localhost:4000/graphql', {
             method: 'POST',
@@ -82,6 +80,7 @@ class eventItem extends Component {
             console.log(err);
 
         })
+        this.handleClose()
     }
     render() {
 
@@ -103,30 +102,24 @@ class eventItem extends Component {
                         justifyContent: "space-between"
                     }}>
 
-                        <Typography style={{
-                            color: "#206a5d",
-                            fontSize:"30px",
-                            marginBottom: "10px"
-                        }} variant="h4" component="h2">
-                            <div className={EventItemCSS.fontClassCursive}>
+
+                            <h4 style={{
+                                color: "#206a5d",
+                                fontSize:"50px",
+                                margin: "10px"
+                            }} className={EventItemCSS.fontClassCursive}>
                                 {this.props.title}
-                            </div>
+
 
 
                             <br/>
-                            <Typography style={{
-                                color: "#206a5d",
-                                display:"block !important",
 
-                            }} component="p">
-                                <div className={EventItemCSS.fontClassOpenSans}>
+                                <p className={EventItemCSS.fontClassPrice}>
                             Price: ${this.props.price} - {new Date(this.props.date).toLocaleDateString()}
-                                </div>
-                        </Typography>
+                                </p>
 
+                            </h4>
 
-
-                        </Typography>
                     </CardContent>
                     <CardContent>
                         {this.props.userId === this.props.creatorId ?<p>Your the owner of this Event</p>: <ColorButton style={{color: "#81b214",width: "80px",
@@ -136,9 +129,9 @@ class eventItem extends Component {
                                      type="submit"
                                      variant="contained"
                                      color="primary" onClick={this.handleOpen}>
-                            <div className={EventItemCSS.fontClassSans}>
+                            <p className={EventItemCSS.fontClassSans}>
                                 View Details
-                            </div>
+                            </p>
 
                         </ColorButton>
                         }
@@ -161,33 +154,33 @@ class eventItem extends Component {
                             textAlign:"center",
                             padding:"5px"
                         }}  component="p">
-                            <div className={EventItemCSS.fontClassCursive}>
+                            <p className={EventItemCSS.fontClassCursive}>
                                 {this.props.title}
-                            </div>
+                            </p>
 
                         </Typography>
-                        <Typography style={{
-                            color: "#206a5d",
-                            display:"block !important",
-                            margin: "20px auto",
 
-                        }} component="p">
-                            <div style={{
+                            <p style={{
+                                color: "#206a5d",
+                                display:"block !important",
+                                margin: "20px auto",
                                 fontSize:"20px",
                             }} className={EventItemCSS.fontClassSans}>
                                 Price: ${this.props.price} - {new Date(this.props.date).toLocaleDateString()}
-                            </div>
-                        </Typography>
+                            </p>
+
+                        <div className={EventItemCSS.fontClassOpenSans}>
                         <Typography style ={{
                             color: "#81b214",
                             fontSize:"20px",
                             margin: "20px auto",
                             display: "block",
                         }}  component="p">
-                             <div className={EventItemCSS.fontClassOpenSans}>
+
                             {this.props.description}
-                             </div>
+
                         </Typography>
+                        </div>
                         {this.context.token && (
                             <ColorButton
                             style={{margin: "20px auto",

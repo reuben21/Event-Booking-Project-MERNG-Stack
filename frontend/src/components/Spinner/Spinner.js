@@ -2,8 +2,8 @@ import React from "react";
 import classes from './Spinner.module.css'
 const Spinner = ()=>{
     return (
-        <div className={classes.spinwrapper}>
-            <div className={classes.spinner}>
+        <div component="span" className={classes.spinwrapper}>
+            <div component="span" className={classes.spinner}>
             </div>
         </div>
     );
