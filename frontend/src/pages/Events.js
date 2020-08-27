@@ -13,11 +13,9 @@ import {
     KeyboardDatePicker,
 } from '@material-ui/pickers';
 import EventList from '../components/Event/EventList/EventList'
-//code updated
-// import TextareaAutosize from '@material-ui/core/TextareaAutosize';
-// import useMediaQuery from "@material-ui/core/useMediaQuery";
-import AuthContext from '../context/auth-context'
 
+import AuthContext from '../context/auth-context'
+import Spinner from "../components/Spinner/Spinner";
 const CssTextField = withStyles({
     root: {
         '& label.Mui-focused': {
@@ -111,7 +109,8 @@ class EventsPage extends Component {
     state = {
         open: false,
         selectedDate: new Date(),
-        events: []
+        events: [],
+        isLoading:false
 
     }
 
@@ -208,6 +207,7 @@ class EventsPage extends Component {
     }
 
     fetchEvents = () => {
+        this.setState({isLoading:true})
         const requestBody = {
             query: `
           query {
@@ -241,9 +241,10 @@ class EventsPage extends Component {
         }).then(resData => {
 
             const events = resData.data.events;
-            this.setState({events: events})
+            this.setState({events: events,isLoading:false})
         }).catch(err => {
             console.log(err);
+            this.setState({isLoading:false})
         })
     }
 
@@ -474,8 +475,7 @@ class EventsPage extends Component {
                         </Modal>
                     </div>)}
                 {/*To Get The List of Events*/}
-
-                <EventList events={eventList} authUserId={this.context.userId}/>
+                {this.state.isLoading ? <p><Spinner/></p>:<EventList events={eventList} authUserId={this.context.userId}/>}
 
             </>
         );

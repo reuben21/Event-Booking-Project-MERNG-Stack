@@ -6,6 +6,7 @@ import Grid from '@material-ui/core/Grid';
 import Typography from '@material-ui/core/Typography';
 import {withStyles} from "@material-ui/core/styles";
 import AuthContext from '../context/auth-context'
+// import Spinner from "../components/Spinner/Spinner";
 
 const CssTextField = withStyles({
     root: {
@@ -203,8 +204,6 @@ class AuthPage extends Component {
 
 
                 </Typography>
-
-
             </div>
 
         );

@@ -1,0 +1,48 @@
+.spinwrapper {
+    position: relative;
+    width: 100%;
+    height: 10vh;
+}
+.spinwrapper .spinner {
+    position: absolute;
+    height: 60px;
+    width: 60px;
+    border: 3px solid transparent;
+    border-top-color: #81b214;
+    top: 50%;
+    left: 50%;
+    margin: -30px;
+    border-radius: 50%;
+    animation: spin 2s linear infinite;
+}
+.spinwrapper .spinner:before, .spinwrapper .spinner:after {
+    content: '';
+    position: absolute;
+    border: 3px solid transparent;
+    border-radius: 50%;
+}
+.spinwrapper .spinner:before {
+    border-top-color: #206a5d;
+    top: -12px;
+    left: -12px;
+    right: -12px;
+    bottom: -12px;
+    animation: spin 3s linear infinite;
+}
+.spinwrapper .spinner:after {
+    border-top-color: #bfdcae;
+    top: 6px;
+    left: 6px;
+    right: 6px;
+    bottom: 6px;
+    animation: spin 4s linear infinite;
+}
+
+@keyframes spin {
+    0% {
+        transform: rotate(0deg);
+    }
+    100% {
+        transform: rotate(360deg);
+    }
+}

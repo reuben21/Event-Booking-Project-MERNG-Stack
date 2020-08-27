@@ -6,6 +6,8 @@ import Button from '@material-ui/core/Button';
 import {makeStyles, withStyles} from "@material-ui/core/styles";
 import Modal from '@material-ui/core/Modal';
 import EventItemCSS from './EventItem.module.css'
+// import Grid from "@material-ui/core/Grid";
+import AuthContext from "../../../../context/auth-context";
 const ColorButton = withStyles((theme) => ({
     root: {
         color: '#81b214',
@@ -35,6 +37,7 @@ class eventItem extends Component {
         open: false,
 
            }
+    static contextType = AuthContext;
     handleOpen = () => {
         this.setState({open: true})
     };
@@ -76,18 +79,23 @@ class eventItem extends Component {
 
                         <Typography style={{
                             color: "#206a5d",
-
+                            fontSize:"30px",
                             marginBottom: "10px"
-                        }} variant="h5" component="h2">
-                            {this.props.title}
+                        }} variant="h4" component="h2">
+                            <div className={EventItemCSS.fontClassCursive}>
+                                {this.props.title}
+                            </div>
+
+
                             <br/>
                             <Typography style={{
                                 color: "#206a5d",
                                 display:"block !important",
 
                             }} component="p">
-
-                            Price: ${this.props.price}
+                                <div className={EventItemCSS.fontClassOpenSans}>
+                            Price: ${this.props.price} - {new Date(this.props.date).toLocaleDateString()}
+                                </div>
                         </Typography>
 
 
@@ -102,7 +110,10 @@ class eventItem extends Component {
                                      type="submit"
                                      variant="contained"
                                      color="primary" onClick={this.handleOpen}>
-                            View Details
+                            <div className={EventItemCSS.fontClassSans}>
+                                View Details
+                            </div>
+
                         </ColorButton>
                         }
                     </CardContent>
@@ -118,12 +129,61 @@ class eventItem extends Component {
                     <div className={`${classes.paper} ${EventItemCSS.modalStyle}`}>
                         <Typography style ={{
                             color: "#81b214",
-                            fontSize:"20px",
-
+                            fontSize:"30px",
+                            backgroundColor:"#206a5d",
+                            borderRadius:"10px",
+                            textAlign:"center",
+                            padding:"5px"
                         }}  component="p">
-                            Description:-
-                            {this.props.description}
+                            <div className={EventItemCSS.fontClassCursive}>
+                                {this.props.title}
+                            </div>
+
                         </Typography>
+                        <Typography style={{
+                            color: "#206a5d",
+                            display:"block !important",
+                            margin: "20px auto",
+
+                        }} component="p">
+                            <div style={{
+                                fontSize:"20px",
+                            }} className={EventItemCSS.fontClassSans}>
+                                Price: ${this.props.price} - {new Date(this.props.date).toLocaleDateString()}
+                            </div>
+                        </Typography>
+                        <Typography style ={{
+                            color: "#81b214",
+                            fontSize:"20px",
+                            margin: "20px auto",
+                            display: "block",
+                        }}  component="p">
+                             <div className={EventItemCSS.fontClassOpenSans}>
+                            {this.props.description}
+                             </div>
+                        </Typography>
+                        {/*{this.context.token && (*/}
+                            <ColorButton
+                            style={{margin: "20px auto",
+                                display: "block",
+                                color: "#81b214",
+                                width:"100px",
+
+                                }}
+                            type="submit"
+                            variant="contained"
+                            color="primary" >
+                           Book Event
+                        </ColorButton>
+                        {/*// )}*/}
+                        {/*{!this.context.token && (<div style={{margin: "20px auto",*/}
+                        {/*    display: "block",*/}
+                        {/*    color: "#81b214",*/}
+                        {/*    width:"100px",*/}
+
+                        {/*}}>*/}
+                        {/*    To Book This Event Please Login*/}
+                        {/*</div>)}*/}
                     </div>
                 </Modal>
             </>
