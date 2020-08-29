@@ -4,5 +4,7 @@ This is a Full Web Project With React in the Front - End used and for the backen
 <h4>
 <ul>
   <li> In This We Can Book Event and Event
+   <li> For Booking an Event A Person Must Be logged In 
+     <li> When It comes to authentication i have used Token 
 </ul>
 </h4>
