@@ -28,15 +28,15 @@ app.use(
     })
 );
 
-// mongoose.connect(`mongodb+srv://${process.env.MONGO_USER}:${process.env.MONGO_PASSWORD}@mongodb-syifj.mongodb.net/${process.env.MONGO_DB}?retryWrites=true&w=majority`, { useNewUrlParser: true , useUnifiedTopology: true })
-//     .then(()=>{
-//         app.listen(4000);
-//     }).catch(err=>{
-//         console.log(err)});
-mongoose.connect(`mongodb://localhost:27017/${process.env.MONGO_DB}`, {useNewUrlParser: true, useUnifiedTopology: true})
-    .then(() => {
+mongoose.connect(`mongodb+srv://reuben:reuben@mongodb.syifj.mongodb.net/event-booking?retryWrites=true&w=majority`, { useNewUrlParser: true , useUnifiedTopology: true })
+    .then(()=>{
         app.listen(4000);
-    }).catch(
-    err => {
-        console.log(err);
-    });
+    }).catch(err=>{
+        console.log(err)});
+// mongoose.connect(`mongodb://localhost:27017/${process.env.MONGO_DB}`, {useNewUrlParser: true, useUnifiedTopology: true})
+//     .then(() => {
+//         app.listen(4000);
+//     }).catch(
+//     err => {
+//         console.log(err);
+//     });
