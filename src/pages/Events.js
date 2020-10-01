@@ -224,6 +224,9 @@ class EventsPage extends Component {
           }
         `
         };
+
+
+
         fetch('http://localhost:4000/graphql', {
             method: 'POST',
             body: JSON.stringify(requestBody),
@@ -234,12 +237,10 @@ class EventsPage extends Component {
             if (res.status !== 200 && res.status !== 201) {
                 throw new Error('Failed');
             }
-            console.log(res)
             return res.json();
         }).then(resData => {
 
             const events = resData.data.events;
-            console.log(resData)
             this.setState({events: events,isLoading:false})
         }).catch(err => {
             console.log(err);
